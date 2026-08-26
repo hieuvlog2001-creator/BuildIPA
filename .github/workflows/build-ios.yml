@@ -19,14 +19,29 @@ jobs:
       - name: Flutter version
         run: flutter --version
 
+      - name: Find Flutter project
+        shell: bash
+        run: |
+          PROJECT_DIR=$(dirname "$(find . -name pubspec.yaml -not -path './.git/*' | head -n 1)")
+          
+          if [ -z "$PROJECT_DIR" ] || [ "$PROJECT_DIR" = "." ]; then
+            PROJECT_DIR="."
+          fi
+
+          echo "Flutter project: $PROJECT_DIR"
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+
       - name: Install dependencies
+        working-directory: ${{ env.PROJECT_DIR }}
         run: flutter pub get
 
       - name: Build IPA
+        working-directory: ${{ env.PROJECT_DIR }}
         run: flutter build ipa --release --no-codesign
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: build/ios/ipa/*.ipa
+          path: ${{ env.PROJECT_DIR }}/build/ios/ipa/*.ipa
+          if-no-files-found: error
