@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15-intel
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -22,22 +22,40 @@ jobs:
       - name: Find Flutter project
         shell: bash
         run: |
-          PROJECT_DIR=$(dirname "$(find . -name pubspec.yaml -not -path './.git/*' | head -n 1)")
-          
-          if [ -z "$PROJECT_DIR" ] || [ "$PROJECT_DIR" = "." ]; then
-            PROJECT_DIR="."
+          PROJECT_DIR="$(dirname "$(find . -name pubspec.yaml -not -path './.git/*' | head -n 1)")"
+
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "ERROR: pubspec.yaml not found"
+            exit 1
           fi
 
-          echo "Flutter project: $PROJECT_DIR"
           echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+          echo "Flutter project: $PROJECT_DIR"
 
       - name: Install dependencies
         working-directory: ${{ env.PROJECT_DIR }}
         run: flutter pub get
 
+      - name: Generate iOS project
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: |
+          flutter create \
+            --platforms=ios \
+            --org com.mb.recreated \
+            .
+
+      - name: Verify iOS project
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: |
+          echo "Checking iOS project..."
+          ls -la ios
+          test -f ios/Runner.xcodeproj/project.pbxproj
+          echo "iOS Xcode project OK"
+
       - name: Build IPA
         working-directory: ${{ env.PROJECT_DIR }}
-        run: flutter build ipa --release --no-codesign
+        run: |
+          flutter build ipa --release --no-codesign
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
