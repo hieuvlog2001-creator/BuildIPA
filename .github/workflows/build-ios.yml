@@ -44,22 +44,29 @@ jobs:
             --org com.mb.recreated \
             .
 
-      - name: Verify iOS project
+      - name: Build iOS app
         working-directory: ${{ env.PROJECT_DIR }}
         run: |
-          echo "Checking iOS project..."
-          ls -la ios
-          test -f ios/Runner.xcodeproj/project.pbxproj
-          echo "iOS Xcode project OK"
+          flutter build ios --release --no-codesign
 
-      - name: Build IPA
+      - name: Create unsigned IPA
         working-directory: ${{ env.PROJECT_DIR }}
+        shell: bash
         run: |
-          flutter build ipa --release --no-codesign
+          rm -rf unsigned_ipa
+          mkdir -p unsigned_ipa/Payload
+
+          cp -R build/ios/iphoneos/Runner.app unsigned_ipa/Payload/
+
+          cd unsigned_ipa
+          zip -r ../MB_Recreated_App.ipa Payload
+
+          cd ..
+          ls -lh MB_Recreated_App.ipa
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: ios-ipa
-          path: ${{ env.PROJECT_DIR }}/build/ios/ipa/*.ipa
+          path: ${{ env.PROJECT_DIR }}/MB_Recreated_App.ipa
           if-no-files-found: error
