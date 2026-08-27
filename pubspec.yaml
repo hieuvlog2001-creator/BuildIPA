@@ -1,0 +1,20 @@
+name: mb_recreated_app
+description: Recreated Flutter login UI based on the supplied Runner.app.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/img/login_bg_main.webp
+    - assets/img/MB_LOGO.png
+    - assets/img/ic_lock_login.png
+    - assets/img/ic_eye_show.png
+    - assets/img/ic_eye_hide.png
