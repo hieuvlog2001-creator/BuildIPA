@@ -1,11 +1,23 @@
-# MB Recreated App
+# NovaBank — GitHub Build IPA
 
-Flutter iOS project with a recreated MB-style login and home interface based on the supplied reference screenshots.
+Bản này được chuẩn bị để đưa thẳng lên GitHub và chạy **Actions → Build IPA**.
+Không cần cài Node.js/npm trên máy của bạn.
 
-## Build with GitHub Actions
+## Cách dùng
+1. Tạo repository GitHub mới.
+2. Upload toàn bộ file/thư mục trong project này.
+3. Commit & push lên `main`.
+4. Vào tab **Actions** → **Build IPA** → **Run workflow**.
+5. Khi build xong, vào phần **Artifacts** tải `NovaBank-IPA`.
 
-1. Push the project to GitHub.
-2. Open **Actions → Build IPA → Run workflow**.
-3. When the run succeeds, open the run and download the **MB-IPA-unsigned** artifact.
+### Lưu ý ký IPA
+Workflow mặc định tạo **IPA unsigned** để không cần Apple certificate.
+IPA unsigned không cài trực tiếp được trên iPhone thông thường.
 
-The workflow creates the iOS project automatically with `flutter create`, then builds an unsigned IPA.
+Nếu bạn có Apple Developer certificate/provisioning profile, có thể thêm bước signing vào GitHub Actions để tạo IPA đã ký.
+
+Demo:
+- Khách: 10000001 / 123456
+- Admin: admin / admin123
+
+Đây là Banking Demo offline, không kết nối ngân hàng thật và không xử lý tiền thật.

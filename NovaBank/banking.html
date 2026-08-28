@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NovaBank • Banking</title><link rel="stylesheet" href="css/style.css"></head>
+<body>
+<header class="topbar"><div class="brand"><div class="logo">N</div><div><b>NovaBank</b><span>Digital Banking</span></div></div>
+<div class="top-actions"><span id="userName"></span><button class="ghost" onclick="logout()">Đăng xuất</button></div></header>
+<main class="container">
+<section class="welcome"><div><p class="muted">Tài khoản của bạn</p><h1 id="hello">Xin chào</h1></div><div class="pill" id="status">Đang hoạt động</div></section>
+<div class="grid-3">
+  <div class="card balance"><span>Số dư khả dụng</span><strong id="balance">0 ₫</strong><small id="accountNo"></small></div>
+  <div class="card"><span>Chủ tài khoản</span><h3 id="holder">-</h3><small>Khách hàng cá nhân</small></div>
+  <div class="card"><span>Trạng thái</span><h3 id="userStatus">-</h3><small>Tài khoản Banking Demo</small></div>
+</div>
+<div class="grid-2">
+  <section class="card"><div class="section-head"><h2>Chuyển tiền</h2><span class="muted">Nội bộ</span></div>
+    <form id="transferForm">
+      <label>Số tài khoản nhận</label><input id="toAccount" required placeholder="10000002">
+      <label>Số tiền</label><input id="amount" type="number" min="1" required placeholder="500000">
+      <label>Nội dung</label><input id="note" placeholder="Chuyển tiền">
+      <button class="primary full">Xác nhận chuyển tiền</button>
+    </form><div id="transferMsg" class="msg"></div>
+  </section>
+  <section class="card"><div class="section-head"><h2>Thông tin</h2></div>
+    <div class="info-row"><span>Email</span><b id="email">-</b></div>
+    <div class="info-row"><span>Số điện thoại</span><b id="phone">-</b></div>
+    <div class="info-row"><span>Ngày tạo</span><b id="created">-</b></div>
+  </section>
+</div>
+<section class="card"><div class="section-head"><h2>Lịch sử giao dịch</h2><button class="ghost" onclick="render()">Làm mới</button></div>
+<div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Nội dung</th><th>Loại</th><th>Số tiền</th><th>Số dư</th></tr></thead><tbody id="transactions"></tbody></table></div></section>
+</main>
+<script src="js/database.js"></script><script src="js/banking.js"></script></body></html>
